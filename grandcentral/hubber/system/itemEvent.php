@@ -10,6 +10,8 @@
 class itemEvent extends _items
 {
   public $tagrel;
+  public $sync_status;
+  public $sync_status_fetched = false;
   /**
 	* Obtenir les artistes associé à l'événement
 	*
@@ -81,6 +83,18 @@ class itemEvent extends _items
     return $datas;
   }
 
+  private function is_sync_status_active_from_feed() {
+    if (!$this->sync_status_fetched) {
+      $sync_page = i('page', 'synchubber');
+      $this->sync_status = (bool) $sync_page['type']['master']['param']['sync_status'];
+      $this->sync_status_fetched = true;
+
+      $sellstatus = i('sellstatus', all);
+      $this->sellstatus = $sellstatus->set_index('id');
+    }
+    return $this->sync_status;
+  }
+
   /**
 	* Obtenir les séances de l'événement
 	*
@@ -89,7 +103,13 @@ class itemEvent extends _items
 	*/
 	public function get_seance() {
     $seances = json_decode($this['seance']->get(), true);
-
+    // HACK force session status if Disable status sync in synchubber page param is active
+    if ($this->is_sync_status_active_from_feed()) {
+      for ($i=0, $count = count($seances); $i < $count; $i++)
+      {
+        $seances[$i]['status'] = $this->sellstatus[$this['sellstatus']->get()]['key']->get();
+      }
+    }
     return $seances;
   }
 

@@ -125,8 +125,17 @@ form>fieldset ol>li[data-type] .wrapper .field
 /********************************************************************************************/
 form>fieldset ol>li[data-type] .wrapper .help
 {
-	padding:10px 0;
-	display:none;
+	/* padding:10px; */
+	color: #333333;
+	/* width: 25%; */
+	/* float: left; */
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+	font-family: "ProximaNova-Thin";
+	vertical-align: top;
+	/* display:none; */
 }
 
 /********************************************************************************************/
