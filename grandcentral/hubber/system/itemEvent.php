@@ -107,7 +107,9 @@ class itemEvent extends _items
     if ($this->is_sync_status_active_from_feed()) {
       for ($i=0, $count = count($seances); $i < $count; $i++)
       {
-        $seances[$i]['status'] = $this->sellstatus[$this['sellstatus']->get()]['key']->get();
+        if (!$this['sellstatus']->is_empty()) {
+          $seances[$i]['status'] = $this->sellstatus[$this['sellstatus']->get()]['key']->get();
+        }
       }
     }
     return $seances;
